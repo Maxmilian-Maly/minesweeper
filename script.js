@@ -2,8 +2,7 @@ const rows = 10;
 const cols = 10;
 const boardElement = document.getElementById('game-board');
 
-// Zde si budeme ukládat všechny vytvořené HTML elementy (divy),
-// abychom z nich mohli snadno náhodně vybírat
+// pole na ukladani divu
 let allCells = [];
 
 function initGame() {
@@ -11,39 +10,39 @@ function initGame() {
     boardElement.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
     allCells = [];
 
-    // 1. Vytvoření HTML buněk a jejich nastavení
+    // delani bunek
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             const cell = document.createElement('div');
             cell.classList.add('cell');
 
-            // Nastavíme výchozí data atributy přímo do HTML
+            // vychozi data
             cell.dataset.row = r;
             cell.dataset.col = c;
             cell.dataset.isMine = "false";
             cell.dataset.strength = "0";
 
-            // Přidáme klikací událost (zatím jen výpis)
+            // klikani vypois
             cell.addEventListener('click', function() {
                 console.log(`Klik: Řádek ${cell.dataset.row}, Sloupec ${cell.dataset.col} | Mina: ${cell.dataset.isMine} | Síla: ${cell.dataset.strength}`);
             });
 
             boardElement.appendChild(cell);
-            allCells.push(cell); // Přidáme element do našeho seznamu
+            allCells.push(cell); // prida do seznamu
         }
     }
 
-    // 2. Rozmístění min (síla, počet)
+    // sila a pocet min
     placeMines(1, 7);
     placeMines(3, 5);
     placeMines(5, 4);
 }
 
-// Funkce pro náhodné rozmístění min na HTML elementy
+// random placement
 function placeMines(strength, count) {
     let placed = 0;
     while (placed < count) {
-        // Vybereme náhodný index ze všech buněk (0 až 99)
+        // vyber random bunky
         let randomIndex = Math.floor(Math.random() * allCells.length);
         let randomCell = allCells[randomIndex];
 
