@@ -2,6 +2,7 @@ const rows = 10;
 const cols = 10;
 const boardElement = document.getElementById('game-board');
 const hpElement = document.getElementById('hp-display');
+const resetBtn = document.getElementById('reset-btn');
 
 // pole na ukladani divu
 let allCells = [];
@@ -12,6 +13,7 @@ function initGame() {
     boardElement.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
     allCells = [];
     hp = 10; // reset hp
+    hpElement.textContent = hp;
 
     // delani bunek
     for (let r = 0; r < rows; r++) {
@@ -86,5 +88,6 @@ function placeMines(strength, count) {
     }
 }
 
-// Spuštění hry
-initGame();
+
+initGame(); // prvni nacteni
+resetBtn.addEventListener('click', initGame); // tlacitko rest
