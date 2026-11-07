@@ -44,12 +44,41 @@ function initGame() {
 
                     // Kontrola konce hry
                     if (hp <= 0) {
-                        hpElement.textContent = "0"; // Abychom neukazovali do mínusu
-                        setTimeout(() => alert("Konec hry! Došly ti životy."), 10);
+                        hpElement.textContent = "0";
+                        setTimeout(() => alert("Konec hry! Došly ti životy."), 10); // opozdene da alert
                     }
                 } else {
-                    // Není to mina (později sem přidáme výpočet okolí)
-                    cell.style.backgroundColor = 'lightgreen'; // Jen prozatím obarvíme bezpečné pole
+                    // Není to mina -> vypocet min v okolo
+                    cell.style.backgroundColor = 'lightgreen';
+
+                    let currentRow = parseInt(cell.dataset.row);
+                    let currentCol = parseInt(cell.dataset.col);
+                    let mineCount = 0;
+
+                    // Procházení 8 sousedů (od -1 do +1 pro řádky i sloupce) - tohle je AIkem - Gemini 3.1 Pro
+                    for (let rOffset = -1; rOffset <= 1; rOffset++) {
+                        for (let cOffset = -1; cOffset <= 1; cOffset++) {
+                            let checkRow = currentRow + rOffset;
+                            let checkCol = currentCol + cOffset;
+
+                            // Kontrola, zda soused nevybočuje z hrací plochy
+                            if (checkRow >= 0 && checkRow < rows && checkCol >= 0 && checkCol < cols) {
+                                // Přepočet 2D souřadnic na 1D index v poli allCells
+                                let neighborIndex = checkRow * cols + checkCol;
+                                let neighborCell = allCells[neighborIndex];
+
+                                // Pokud má soused minu, zvedneme počítadlo
+                                if (neighborCell.dataset.isMine === "true") {
+                                    mineCount++;
+                                }
+                            }
+                        }
+                    }
+
+                    // vypis vysledku
+                    if (mineCount > 0) {
+                        cell.textContent = mineCount;
+                    }
                 }
             });
 
