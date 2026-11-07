@@ -48,37 +48,39 @@ function initGame() {
                         setTimeout(() => alert("Konec hry! Došly ti životy."), 10); // opozdene da alert
                     }
                 } else {
-                    // Není to mina -> vypocet min v okolo
+                    // neni to mina - vypocet okoli
                     cell.style.backgroundColor = 'lightgreen';
 
                     let currentRow = parseInt(cell.dataset.row);
                     let currentCol = parseInt(cell.dataset.col);
                     let mineCount = 0;
+                    let strengthSum = 0; // promenna pro celkovou silu
 
-                    // Procházení 8 sousedů (od -1 do +1 pro řádky i sloupce) - tohle je AIkem - Gemini 3.1 Pro
+                    // prochazeni 8 sousedu
                     for (let rOffset = -1; rOffset <= 1; rOffset++) {
                         for (let cOffset = -1; cOffset <= 1; cOffset++) {
                             let checkRow = currentRow + rOffset;
                             let checkCol = currentCol + cOffset;
 
-                            // Kontrola, zda soused nevybočuje z hrací plochy
+                            // kontrola, zda soused nevybocuje z hraci plochy
                             if (checkRow >= 0 && checkRow < rows && checkCol >= 0 && checkCol < cols) {
-                                // Přepočet 2D souřadnic na 1D index v poli allCells
                                 let neighborIndex = checkRow * cols + checkCol;
                                 let neighborCell = allCells[neighborIndex];
 
-                                // Pokud má soused minu, zvedneme počítadlo
+                                // pokud ma soused minu, zvedneme pocitadlo a pricteme silu
                                 if (neighborCell.dataset.isMine === "true") {
                                     mineCount++;
+                                    // vycteni sily miny z atributu a pricteni k celkove sume
+                                    strengthSum += parseInt(neighborCell.dataset.strength);
                                 }
                             }
                         }
                     }
 
-                    // vypis vysledku
-                    if (mineCount > 0) {
-                        cell.textContent = mineCount;
-                    }
+                    // vypis obou hodnot na policko
+                        cell.innerHTML = `<span style="color: purple; font-weight: bold;">${mineCount}</span>|<span style="color: red; font-weight: bold;">${strengthSum}</span>`;
+                        cell.style.fontSize = "14px"; // pismo trochu zmensime, at se to tam vejde
+
                 }
             });
 
