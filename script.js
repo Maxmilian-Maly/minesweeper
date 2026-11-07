@@ -30,7 +30,7 @@ function initGame() {
             //kliknuti
             cell.addEventListener('click', function() {
                 // pokud je odhaleny nebo 0 hp, tak nic
-                if (cell.classList.contains('revealed') || hp <= 0) return;
+                if (cell.classList.contains('revealed') || cell.classList.contains('flagged') || hp <= 0) return;
 
                 cell.classList.add('revealed');
 
@@ -50,6 +50,23 @@ function initGame() {
                 } else {
                     // Není to mina (později sem přidáme výpočet okolí)
                     cell.style.backgroundColor = 'lightgreen'; // Jen prozatím obarvíme bezpečné pole
+                }
+            });
+
+            // right click pro vlajecky
+            cell.addEventListener('contextmenu', function(e) {
+                e.preventDefault(); // zabrani defaultnimu menu
+
+                if (cell.classList.contains('revealed') || hp <= 0) return;
+
+                // prepinani stavu
+                if (cell.classList.contains('flagged')) {
+                    cell.classList.remove('flagged');
+                    cell.textContent = ''; //smaze vlajku
+
+                } else {
+                    cell.classList.add('flagged');
+                    cell.textContent = '🚩'; // Vloží emoji
                 }
             });
 

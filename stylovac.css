@@ -18,6 +18,12 @@ body {
     height: 30px;
     background-color: #ccc;
     cursor: pointer;
+
+    /* vycentruje vlajecky doprostred */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
 }
 
 .cell:hover {
