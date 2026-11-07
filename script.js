@@ -10,7 +10,7 @@ let hp = 10;
 
 function initGame() {
     boardElement.innerHTML = '';
-    boardElement.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
+    boardElement.style.gridTemplateColumns = `repeat(${cols}, 45px)`;
     allCells = [];
     hp = 10; // reset hp
     hpElement.textContent = hp;
@@ -78,8 +78,8 @@ function initGame() {
                     }
 
                     // vypis obou hodnot na policko
-                        cell.innerHTML = `<span style="color: purple; font-weight: bold;">${mineCount}</span>|<span style="color: red; font-weight: bold;">${strengthSum}</span>`;
-                        cell.style.fontSize = "14px"; // pismo trochu zmensime, at se to tam vejde
+                    cell.innerHTML = `<span style="color: purple; font-weight: bold;">${mineCount}</span>|<span style="color: red; font-weight: bold;">${strengthSum}</span>`;
+                    cell.style.fontSize = "16px";
 
                 }
             });

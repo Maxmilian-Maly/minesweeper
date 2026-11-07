@@ -14,16 +14,16 @@ body {
 }
 
 .cell {
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
     background-color: #ccc;
     cursor: pointer;
 
-    /* vycentruje vlajecky doprostred */
+    /* vycentruje vlajecky a cisla doprostred */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .cell:hover {
