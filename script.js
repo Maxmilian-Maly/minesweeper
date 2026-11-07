@@ -1,14 +1,17 @@
 const rows = 10;
 const cols = 10;
 const boardElement = document.getElementById('game-board');
+const hpElement = document.getElementById('hp-display');
 
 // pole na ukladani divu
 let allCells = [];
+let hp = 10;
 
 function initGame() {
     boardElement.innerHTML = '';
     boardElement.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
     allCells = [];
+    hp = 10; // reset hp
 
     // delani bunek
     for (let r = 0; r < rows; r++) {
@@ -22,9 +25,30 @@ function initGame() {
             cell.dataset.isMine = "false";
             cell.dataset.strength = "0";
 
-            // klikani vypois
+            //kliknuti
             cell.addEventListener('click', function() {
-                console.log(`Klik: Řádek ${cell.dataset.row}, Sloupec ${cell.dataset.col} | Mina: ${cell.dataset.isMine} | Síla: ${cell.dataset.strength}`);
+                // pokud je odhaleny nebo 0 hp, tak nic
+                if (cell.classList.contains('revealed') || hp <= 0) return;
+
+                cell.classList.add('revealed');
+
+                if (cell.dataset.isMine === "true") {
+                    // minus zivoty
+                    let damage = parseInt(cell.dataset.strength);
+                    hp -= damage;
+                    hpElement.textContent = hp; //aktualizace ukazatelu
+
+                    cell.classList.add('mine'); // zmena pozadi
+
+                    // Kontrola konce hry
+                    if (hp <= 0) {
+                        hpElement.textContent = "0"; // Abychom neukazovali do mínusu
+                        setTimeout(() => alert("Konec hry! Došly ti životy."), 10);
+                    }
+                } else {
+                    // Není to mina (později sem přidáme výpočet okolí)
+                    cell.style.backgroundColor = 'lightgreen'; // Jen prozatím obarvíme bezpečné pole
+                }
             });
 
             boardElement.appendChild(cell);

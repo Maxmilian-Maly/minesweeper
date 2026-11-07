@@ -23,3 +23,11 @@ body {
 .cell:hover {
     background-color: #ddd;
 }
+.cell.revealed {
+    background-color: #eee;
+    cursor: default;
+}
+
+.cell.mine {
+    background-color: #ffcccc; /* Světle červená, když vybouchne */
+}

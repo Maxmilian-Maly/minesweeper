@@ -9,7 +9,7 @@
 <body>
 
 <h1>Minesweeper</h1>
-
+<h2>Životy: <span id="hp-display">10</span></h2>
 <!-- tady to bude spawnovat policka -->
 <div id="game-board"></div>
 
