@@ -111,6 +111,7 @@ function initGame() {
 }
 
 // random placement
+// random placement
 function placeMines(strength, count) {
     let placed = 0;
     while (placed < count) {
@@ -118,16 +119,11 @@ function placeMines(strength, count) {
         let randomIndex = Math.floor(Math.random() * allCells.length);
         let randomCell = allCells[randomIndex];
 
-        // kontrol ajestli uz nema minu
+        // kontrola jestli uz nema minu
         if (randomCell.dataset.isMine === "false") {
             // prepsani atributu
             randomCell.dataset.isMine = "true";
             randomCell.dataset.strength = strength;
-
-            // docasny vypsani sily miny
-            randomCell.textContent = strength;
-            randomCell.style.color = 'red';
-            randomCell.style.fontWeight = 'bold';
 
             placed++;
         }
