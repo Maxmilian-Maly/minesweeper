@@ -10,7 +10,7 @@ let hp = 10;
 
 function initGame() {
     boardElement.innerHTML = '';
-    boardElement.style.gridTemplateColumns = `repeat(${cols}, 45px)`;
+    boardElement.style.gridTemplateColumns = `repeat(${cols}, 45px)`; // AI used, Gemini Pro 3.1
     allCells = [];
     hp = 10; // reset hp
     hpElement.textContent = hp;
@@ -19,9 +19,9 @@ function initGame() {
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             const cell = document.createElement('div');
-            cell.classList.add('cell');
+            cell.classList.add('cell');// prida css classu s nazvem cell
 
-            // vychozi data
+            // vychozi data kazdeho policka / AI used, Gemini 3.1 Pro
             cell.dataset.row = r;
             cell.dataset.col = c;
             cell.dataset.isMine = "false";
@@ -29,34 +29,36 @@ function initGame() {
 
             //kliknuti
             cell.addEventListener('click', function() {
-                // pokud je odhaleny nebo 0 hp, tak nic
+                // pokud je odhaleny, ovlajkovany nebo 0 hp, tak skipne func
                 if (cell.classList.contains('revealed') || cell.classList.contains('flagged') || hp <= 0) return;
 
                 cell.classList.add('revealed');
 
                 if (cell.dataset.isMine === "true") {
                     // minus zivoty
-                    let damage = parseInt(cell.dataset.strength);
+                    let damage = parseInt(cell.dataset.strength); // premeni text z datasetu na int
                     hp -= damage;
                     hpElement.textContent = hp; //aktualizace ukazatelu
 
                     cell.classList.add('mine'); // zmena pozadi
+                    cell.textContent = "💥";
 
                     // Kontrola konce hry
                     if (hp <= 0) {
-                        hpElement.textContent = "0";
+                        hpElement.textContent = "0"; // aby nebylo do minusu
                         setTimeout(() => alert("Konec hry! Došly ti životy."), 10); // opozdene da alert
                     }
                 } else {
                     // neni to mina - vypocet okoli
-                    cell.style.backgroundColor = 'lightgreen';
+                    cell.style.backgroundColor = '#4ade80';
 
-                    let currentRow = parseInt(cell.dataset.row);
-                    let currentCol = parseInt(cell.dataset.col);
-                    let mineCount = 0;
+                    let currentRow = parseInt(cell.dataset.row); // premeni text z datasetu na int
+                    let currentCol = parseInt(cell.dataset.col); // premeni text z datasetu na int
+                    let mineCount = 0; // promenna pro pocet min
                     let strengthSum = 0; // promenna pro celkovou silu
 
-                    // prochazeni 8 sousedu
+                    // prochazeni 8 sousedu - AI Generated / Used (nevim co pouzit neni to full ai, ale zas jsem si s nim jenom nepsal,
+                    // trochu jsem s touhle logikou bojoval), Gemini 3.1 Pro---------------------------------
                     for (let rOffset = -1; rOffset <= 1; rOffset++) {
                         for (let cOffset = -1; cOffset <= 1; cOffset++) {
                             let checkRow = currentRow + rOffset;
@@ -66,7 +68,7 @@ function initGame() {
                             if (checkRow >= 0 && checkRow < rows && checkCol >= 0 && checkCol < cols) {
                                 let neighborIndex = checkRow * cols + checkCol;
                                 let neighborCell = allCells[neighborIndex];
-
+                    //---------------------------------------------------------------------------------------
                                 // pokud ma soused minu, zvedneme pocitadlo a pricteme silu
                                 if (neighborCell.dataset.isMine === "true") {
                                     mineCount++;
@@ -77,10 +79,24 @@ function initGame() {
                         }
                     }
 
-                    // vypis obou hodnot na policko
-                    cell.innerHTML = `<span style="color: purple; font-weight: bold;">${mineCount}</span>|<span style="color: red; font-weight: bold;">${strengthSum}</span>`;
+                    // vypis obou hodnot na policko - AI Used, Gemini 3.1 Pro - hlavne pomoc se syntaxi
+                    cell.innerHTML = `<span style="color: #5a189a; font-weight: bold;">${mineCount}</span><span style="color: black;">|</span><span style="color: #e63946; font-weight: bold;">${strengthSum}</span>`;
                     cell.style.fontSize = "16px";
 
+                }
+                // spocitame, kolik bezpecnych policek zbyva odkryt
+                let safeUnrevealed = 0;
+                for (let i = 0; i < allCells.length; i++) {
+                    if (allCells[i].dataset.isMine === "false" && !allCells[i].classList.contains('revealed')) {
+                        safeUnrevealed++;
+                    }
+                }
+
+                // pokud nezbyva zadne bezpecne pole a mame stale zivoty, je to vyhra
+                if (safeUnrevealed === 0 && hp > 0) {
+                    //hp nastavit na 0, aby uz neslo dal klikat
+                    hp = 0;
+                    setTimeout(() => alert("Vyhrál/a jsi!"), 10);// opozdene da alert
                 }
             });
 
@@ -102,7 +118,7 @@ function initGame() {
             });
 
             boardElement.appendChild(cell);
-            allCells.push(cell); // prida do seznamu
+            allCells.push(cell); // prida do seznamu se vsema cells
         }
     }
 
@@ -117,7 +133,7 @@ function initGame() {
 function placeMines(strength, count) {
     let placed = 0;
     while (placed < count) {
-        // vyber random bunky
+        // vyber random bunky - AI Used _ Gemini 3.1 Pro, poradil s funkcema
         let randomIndex = Math.floor(Math.random() * allCells.length);
         let randomCell = allCells[randomIndex];
 
@@ -134,4 +150,4 @@ function placeMines(strength, count) {
 
 
 initGame(); // prvni nacteni
-resetBtn.addEventListener('click', initGame); // tlacitko rest
+resetBtn.addEventListener('click', initGame); // tlacitko reset
